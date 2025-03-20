@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Trainees{% endblock title %}
+{% block header %} <h1 class="text-center my-4">Trainees</h1> {% endblock header %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'add_trainee' %}" class="btn btn-primary mb-3">Add Trainee</a>
+    {% if trainees %}
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th colspan="2" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trainee in trainees %}
+            <tr>
+                <td>{{ trainee.id }}</td>
+                <td>{{ trainee.name }}</td>
+                <td>{{ trainee.email }}</td>
+                <td>{{ trainee.age }}</td>
+                <td><a href="{% url 'delete_trainee' trainee.id %}" class="btn btn-danger btn-sm">Delete</a></td>
+                <td><a href="{% url 'update_trainee' trainee.id %}" class="btn btn-warning btn-sm">Update</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center text-muted">No trainees available.</p>
+    {% endif %}
+</div>
+{% endblock content %}
