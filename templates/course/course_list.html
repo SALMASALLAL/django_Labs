@@ -9,6 +9,7 @@
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                     <tr>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Duration</th>
@@ -18,6 +19,7 @@
                 <tbody>
                     {% for course in courses %}
                         <tr>
+                            <td>{{course.id}}</td>
                             <td>{{ course.name }}</td>
                             <td>{{ course.description }}</td>
                             <td>{{ course.duration }}</td>

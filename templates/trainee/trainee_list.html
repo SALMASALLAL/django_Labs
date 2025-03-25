@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Age</th>
+                <th>Course</th>
                 <th colspan="2" class="text-center">Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ trainee.name }}</td>
                 <td>{{ trainee.email }}</td>
                 <td>{{ trainee.age }}</td>
+                <td>{{ trainee.course.name }}</td>
                 <td><a href="{% url 'delete_trainee' trainee.id %}" class="btn btn-danger btn-sm">Delete</a></td>
                 <td><a href="{% url 'update_trainee' trainee.id %}" class="btn btn-warning btn-sm">Update</a></td>
             </tr>

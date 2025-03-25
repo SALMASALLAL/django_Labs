@@ -17,6 +17,7 @@
         <label for="duration" class="form-label">Duration:</label>
         <input type="number" id="duration" name="duration" class="form-control" value="{{ course.duration }}" required>
     </div>
+    
     <div class="d-flex justify-content-between">
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="{% url 'course_list' %}" class="btn btn-secondary">Cancel</a>
