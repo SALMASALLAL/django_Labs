@@ -3,6 +3,7 @@
 {% block header %} <h1 class="text-center my-4">Trainees</h1> {% endblock header %}
 {% block content %}
 <div class="container">
+    
     <a href="{% url 'add_trainee' %}" class="btn btn-primary mb-3">Add Trainee</a>
     {% if trainees %}
     <table class="table table-bordered table-striped">
@@ -24,7 +25,12 @@
                 <td>{{ trainee.email }}</td>
                 <td>{{ trainee.age }}</td>
                 <td>{{ trainee.course.name }}</td>
-                <td><a href="{% url 'delete_trainee' trainee.id %}" class="btn btn-danger btn-sm">Delete</a></td>
+                <td>
+                    <form action="{% url 'delete_trainee' trainee.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
                 <td><a href="{% url 'update_trainee' trainee.id %}" class="btn btn-warning btn-sm">Update</a></td>
             </tr>
             {% endfor %}
