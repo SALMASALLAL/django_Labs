@@ -6,7 +6,11 @@ from .forms import TraineeForm
 from django.views import View
 from django.views.generic import ListView 
 from django.views.generic.edit import DeleteView
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.generics import UpdateAPIView, DestroyAPIView
+from .serializers import TraineeSerializer
 
 class AddTrainee(View):
     def get(self,req):
@@ -29,19 +33,6 @@ class AddTrainee(View):
     
 trainees = []
 
-# def add_trainee(req):
-#     context={
-#         'courses':Course.get_all_courses(),'form':TraineeForm()
-#     }
-#     if req.method == 'POST':
-#         name = req.POST['name']
-#         email = req.POST['email']
-#         age = req.POST['age']
-#         course=Course.get_course_by_id(req.POST['course'])
-#         Trainee.objects.create(name=name,email=email,age=age,course=course)
-#         return redirect('trainee_list')
-#     return render(req,'trainee/add_trainee.html',context)
-
 class UpdateTrainee(View):
     def get(self,req,id):
         context={'courses':Course.get_all_courses(), 'trainee':get_object_or_404(Trainee,id=id)}
@@ -57,36 +48,34 @@ class UpdateTrainee(View):
         trainee.save()
         return redirect('trainee_list')
 
-# def update_trainee(req, id):
-#     trainee = Trainee.objects.get(id=id)
-#     context={'courses':Course.get_all_courses(), 'trainee':trainee}
-#     if not trainee:
-#         return redirect('trainee_list')
-    
-#     if req.method == 'POST':
-#         trainee.name = req.POST['name']
-#         trainee.email = req.POST['email']
-#         trainee.age = req.POST['age']
-#         trainee.course=Course.get_course_by_id(req.POST['course'])
-#         trainee.save()
-#         return redirect('trainee_list')
-    
-#     return render(req, 'trainee/update_trainee.html',context=context)
-
 class TraineeList(ListView):
     model=Trainee
     template_name='trainee/trainee_list.html'
     context_object_name='trainees'
     
-# def trainee_list(req):
-#     trainees=Trainee.objects.all()
-#     return render(req,'trainee/trainee_list.html',{'trainees':trainees})
-
 class DeleteTrainee(DeleteView):
     model = Trainee
     success_url = reverse_lazy('trainee_list')
-    
-# def delete_trainee(req,id):
-#     Trainee.objects.get(id=id).delete()
-#     return redirect('trainee_list')
+
+class TraineeListAPI(APIView):
+    def get(self, request):
+        trainees = Trainee.objects.all()
+        serializer = TraineeSerializer(trainees, many=True)
+        return Response(serializer.data)
+
+class AddTraineeAPI(APIView):
+    def post(self, request):
+        serializer = TraineeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdateTraineeAPI(UpdateAPIView):
+    queryset = Trainee.objects.all()
+    serializer_class = TraineeSerializer
+
+class DeleteTraineeAPI(DestroyAPIView):
+    queryset = Trainee.objects.all()
+    serializer_class = TraineeSerializer
 

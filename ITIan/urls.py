@@ -17,8 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from .views import home, login, register
+from rest_framework.routers import SimpleRouter
+from course.views import CourseViewSet
+from trainee.views import TraineeListAPI, AddTraineeAPI, UpdateTraineeAPI, DeleteTraineeAPI
 
-
+router = SimpleRouter()
+router.register('api/course', CourseViewSet, basename='course')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +32,8 @@ urlpatterns = [
     path('course/',include('course.urls')),
     path('login/', login, name='login'),
     path('register/', register, name='register'),
-]
+    path('api/trainee/', TraineeListAPI.as_view(), name='trainee_list_api'),
+    path('api/trainee/add/', AddTraineeAPI.as_view(), name='add_trainee_api'),
+    path('api/trainee/update/<int:pk>/', UpdateTraineeAPI.as_view(), name='update_trainee_api'),
+    path('api/trainee/delete/<int:pk>/', DeleteTraineeAPI.as_view(), name='delete_trainee_api'),
+] + router.urls
